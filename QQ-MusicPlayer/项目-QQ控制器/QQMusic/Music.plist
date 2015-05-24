@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>collect</key>
+		<true/>
+		<key>singerName</key>
+		<string>德永英明</string>
+		<key>songName</key>
+		<string>世界に一つだけの花</string>
+	</dict>
+	<dict>
+        <key>collect</key>
+        <true/>
+		<key>singerName</key>
+		<string>浜崎あゆみ</string>
+		<key>songName</key>
+		<string>MY ALL</string>
+	</dict>
+    <dict>
+        <key>collect</key>
+        <true/>
+        <key>singerName</key>
+        <string>黄艺明</string>
+        <key>songName</key>
+        <string>我们的天空</string>
+    </dict>
+    <dict>
+        <key>collect</key>
+        <true/>
+        <key>singerName</key>
+        <string>酒井法子</string>
+        <key>songName</key>
+        <string>碧いうさぎ</string>
+    </dict>
+    <dict>
+        <key>collect</key>
+        <true/>
+        <key>singerName</key>
+        <string>Eric Church</string>
+        <key>songName</key>
+        <string>Give Me Back My Hometown</string>
+    </dict>
+    <dict>
+        <key>collect</key>
+        <true/>
+        <key>singerName</key>
+        <string>Jem</string>
+        <key>songName</key>
+        <string>It's Amazing</string>
+    </dict>
+    <dict>
+        <key>collect</key>
+        <true/>
+        <key>singerName</key>
+        <string>Lady Gaga</string>
+        <key>songName</key>
+        <string>Poker Face</string>
+    </dict>
+    <dict>
+        <key>collect</key>
+        <true/>
+        <key>singerName</key>
+        <string>Selena Gomez</string>
+        <key>songName</key>
+        <string>Who Says</string>
+    </dict>
+    <dict>
+        <key>collect</key>
+        <true/>
+        <key>singerName</key>
+        <string>Zedd</string>
+        <key>songName</key>
+        <string>I Want You to Know</string>
+    </dict>
+</array>
+</plist>
