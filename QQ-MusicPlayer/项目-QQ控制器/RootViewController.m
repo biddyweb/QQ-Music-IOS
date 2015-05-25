@@ -19,31 +19,32 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self _loadSubViews]; // 搭建界面
+    [self _loadSubViews]; // 加载界面元素
     
     [self _loadData];     // 获取数据
     
-    [self _initViews];    // 界面初始化
+    [self _init];    // 初始化（界面初始化 & 播放）
     
-    [self _playMusic:[_playingSongData objectForKey:@"songName"]];  //开始播放
-    
+    // 添加一个定时器，使slider和音频同步
     [NSTimer scheduledTimerWithTimeInterval:1.f
                                      target:self
                                    selector:@selector(_synchronizeSliderAndMusic)
                                    userInfo:nil
-                                    repeats:YES];   // 添加一个定时器，使slider和音频同步
+                                    repeats:YES];
 }
 
 #pragma mark - protocol Method
 
-#pragma mark 中间部分透明按钮监听事件
+/* 中间部分透明按钮监听事件 */
 - (void)middleViewButtonAction {
     
     // 隐藏(或显示) 上部分基视图 和 下部分基视图
     CGFloat topBaseViewOriginY = _topBaseView.frame.origin.y;
+    float topViewMoveLenOfY = topBaseViewOriginY == kStatusBarHeight? -(kStatusBarHeight + kTopViewHeight) : kStatusBarHeight + kTopViewHeight;
+    float buttomMoveLenOfY = topBaseViewOriginY == kStatusBarHeight? kButtomViewHeight : -kButtomViewHeight;
     [UIView animateWithDuration:1.0f animations:^{
-        _topBaseView.transform = CGAffineTransformTranslate(_topBaseView.transform, 0, topBaseViewOriginY? 100 : -100);
-        _buttomBaseView.transform = CGAffineTransformTranslate(_buttomBaseView.transform, 0, topBaseViewOriginY? -170 : 170);
+        _topBaseView.transform = CGAffineTransformTranslate(_topBaseView.transform, 0, topViewMoveLenOfY);
+        _buttomBaseView.transform = CGAffineTransformTranslate(_buttomBaseView.transform, 0, buttomMoveLenOfY);
     }];
     
     // 隐藏音量slider
@@ -52,12 +53,12 @@
     }
 }
 
-#pragma mark 返回按钮监听事件
+/* 返回按钮监听事件 */
 - (void)backButtonAction {
     NSLog(@"返回");
 }
 
-#pragma mark 收藏按钮监听事件
+/*  收藏按钮监听事件 */
 - (void)collectButtonAction {
     
     // 取消收藏时，弹出窗口让用户确认
@@ -74,120 +75,49 @@
         
         // 收藏
         _collectFlg = !_collectFlg;
-        
         [_playingSongData setValue:@(_collectFlg) forKey:@"collect"];
-        [_dataArray replaceObjectAtIndex:_currentDataIndex withObject:_playingSongData];
-        
         [self setCollectButton:_collectFlg];
     }
 }
 
-#pragma mark 上一首
-- (void)lastSongButtonAction {
-    
-    _currentDataIndex--;
-    // 设置下一首按钮
-    [_nextSongButton setEnabled:YES];
-    
-    // 取出下一首歌的信息
-    _playingSongData = _dataArray[_currentDataIndex];
-    NSString *singerName = [_playingSongData objectForKey:@"singerName"];
-    NSString *songName = [_playingSongData objectForKey:@"songName"];
-    _collectFlg = [[_playingSongData objectForKey:@"collect"] boolValue];
-    
-    // 设置收藏图片
-    [self setCollectButton:_collectFlg];
-    
-    // 设置歌名和歌手名字
-    [_singerName setText:singerName];
-    [_songName setText:songName];
-    
-    // 更换背景图片
-    [_backgroundImageView setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@.jpg",singerName]]];
-    
-    // 加载并播放相应的音乐
-    if (!_pauseFlg) {
-        [self _playMusic:songName];
-    }
-    
-    // 判断还有没有下一首歌
-    if (_currentDataIndex == 0) {
-        [_lastSongButton setEnabled:NO];
+/* 播放按钮事件（上一首，暂停/播放，下一首）*/
+- (void)playBtnAction:(UIButton *)sender {
+ 
+    switch (sender.tag) {
+            
+        case 44: // 上一首
+            
+            [self playSongByIndex:--_currentDataIndex];
+            break;
+        case 45: // 暂停/播放
+            
+            [self pauseOrPlay];
+            break;
+        case 46: // 下一首
+            
+            [self playSongByIndex:++_currentDataIndex];
+            break;
+        default:
+            break;
     }
 }
 
-#pragma mark 暂停/开始
-- (void)pauseButtonAction {
-    
-    _pauseFlg = !_pauseFlg;
-    if (_pauseFlg) {
-        
-        // 暂停
-        [_pauseButton setBackgroundImage:[UIImage imageNamed:@"playing_btn_play_n@2x"] forState:UIControlStateNormal];
-        [_pauseButton setBackgroundImage:[UIImage imageNamed:@"playing_btn_play_h@2x"] forState:UIControlStateHighlighted];
-        [_avAudioPlayer pause];
-    } else {
-        
-        // 播放
-        [_pauseButton setBackgroundImage:[UIImage imageNamed:@"playing_btn_pause_n@2x"] forState:UIControlStateNormal];
-        [_pauseButton setBackgroundImage:[UIImage imageNamed:@"playing_btn_pause_h@2x"] forState:UIControlStateHighlighted];
-        [_avAudioPlayer play];
-    }
-}
-
-#pragma mark 下一首
-- (void)nextSongButtonAction {
-    
-    _currentDataIndex++;
-    
-    // 设置上一首按钮
-    if (_currentDataIndex != 0) {
-        [_lastSongButton setEnabled:YES];
-    }
-    
-    // 取出下一首歌的信息
-    _playingSongData = _dataArray[_currentDataIndex];
-    NSString *singerName = [_playingSongData objectForKey:@"singerName"];
-    NSString *songName = [_playingSongData objectForKey:@"songName"];
-    _collectFlg = [[_playingSongData objectForKey:@"collect"] boolValue];
-    
-    // 设置收藏图片
-    [self setCollectButton:_collectFlg];
-    
-    // 设置歌名和歌手名字
-    [_singerName setText:singerName];
-    [_songName setText:songName];
-    
-    // 更换背景图片
-    [_backgroundImageView setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@.jpg",singerName]]];
-    
-    // 加载并播放相应的音乐
-    if (!_pauseFlg) {
-        [self _playMusic:songName];
-    }
-    
-    // 判断还有没有下一首歌
-    if (_currentDataIndex == _dataArray.count - 1) {
-        [_nextSongButton setEnabled:NO];
-    }
-}
-
-#pragma mark 设置收藏按钮
+/*  设置收藏按钮 */
 - (void)setCollectButton:(BOOL)inMyFavor {
     if (inMyFavor) {
         
         // 已经收藏
-        [_collectButton setBackgroundImage:[UIImage imageNamed:@"playing_btn_in_myfavor@2x"] forState:UIControlStateNormal];
-        [_collectButton setBackgroundImage:[UIImage imageNamed:@"playing_btn_in_myfavor_h@2x"] forState:UIControlStateHighlighted];
+        [_collectButton setImage:[UIImage imageNamed:@"playing_btn_in_myfavor@2x"] forState:UIControlStateNormal];
+        [_collectButton setImage:[UIImage imageNamed:@"playing_btn_in_myfavor_h@2x"] forState:UIControlStateHighlighted];
     } else {
         
         // 未收藏
-        [_collectButton setBackgroundImage:[UIImage imageNamed:@"playing_btn_love@2x"] forState:UIControlStateNormal];
-        [_collectButton setBackgroundImage:[UIImage imageNamed:@"playing_btn_love_h@2x"] forState:UIControlStateHighlighted];
+        [_collectButton setImage:[UIImage imageNamed:@"playing_btn_love@2x"] forState:UIControlStateNormal];
+        [_collectButton setImage:[UIImage imageNamed:@"playing_btn_love_h@2x"] forState:UIControlStateHighlighted];
     }
 }
 
-#pragma mark slider拖动监听事件
+/* slider拖动监听事件 */
 - (void)sliderValueChageAction {
     
     // 获取slider当前值
@@ -195,14 +125,14 @@
     _avAudioPlayer.currentTime = sliderTimeNow;
 }
 
-#pragma mark 音量
+/*  音量 */
 - (void)volumeButtonAction {
     
     // 设置音量滑块的显示和隐藏
     [_volumeSlider setHidden:!_volumeSlider.hidden];
 }
 
-#pragma mark 音量滑块
+/*  音量滑块 */
 - (void)volumeSliderAction {
     
     float volumeNow = 1.0f - _volumeSlider.value;
@@ -212,11 +142,11 @@
     [self performSelector:@selector(_hiddenVolumeSlider) withObject:nil afterDelay:1.5f];
 }
 
-#pragma mark  播放模式
+/*  播放模式 */
 - (void)playModleAction {
     
     int imageIndex = _playModleImageIndex++ % 3;
-    [_playModleButton setBackgroundImage:_playModleImageArray[imageIndex] forState:UIControlStateNormal];
+    [_playModleButton setImage:_playModleImageArray[imageIndex] forState:UIControlStateNormal];
     switch (imageIndex) {
         case 0:  // 循环播放
             _avAudioPlayer.numberOfLoops = 0;
@@ -238,7 +168,45 @@
 
 #pragma mark - private Method
 
-#pragma mark - 加载界面视图
+/* 音乐信息取得 & 播放 */
+- (void)playSongByIndex:(NSInteger )index {
+    
+    // 1.取出下一首歌的信息
+    _playingSongData = _dataArray[index];
+    NSString *singerName = [_playingSongData objectForKey:@"singerName"];
+    NSString *songName = [_playingSongData objectForKey:@"songName"];
+    _collectFlg = [[_playingSongData objectForKey:@"collect"] boolValue];
+    
+    // 2.设置收藏图片
+    [self setCollectButton:_collectFlg];
+    
+    // 3.设置歌名和歌手名字
+    [_singerName setText:singerName];
+    [_songName setText:songName];
+    
+    // 4.更换背景图片
+    [_backgroundImageView setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@.jpg",singerName]]];
+    
+    // 5.设置上一首和下一首按钮
+    if (_currentDataIndex == 0) {
+        [_lastSongButton setEnabled:NO];
+    } else {
+        [_lastSongButton setEnabled:YES];
+    }
+    
+    if (_currentDataIndex == _dataArray.count - 1) {
+        [_nextSongButton setEnabled:NO];
+    } else {
+        [_nextSongButton setEnabled:YES];
+    }
+    
+    // 6.加载并播放相应的音乐
+    if (!_pauseFlg) {
+        [self _playMusic:songName];
+    }
+}
+
+/*  加载界面视图 */
 - (void)_loadSubViews {
     
     // 1. 加载根视图
@@ -269,7 +237,7 @@
     _volumeSlider        = (UISlider *)[self.view viewWithTag:5];  // tag:5 音量滑块
 }
 
-#pragma mark 播放音频
+/* 播放音频 */
 - (void) _playMusic:(NSString *)nameOfSongFile {
     
     // 指定音频文件
@@ -299,7 +267,30 @@
     [_songSlider setMaximumValue:_avAudioPlayer.duration];
 }
 
-#pragma mark 同步slider和音频
+/* 暂停/播放 */
+- (void) pauseOrPlay {
+    
+    _pauseFlg = !_pauseFlg;
+    if (_pauseFlg) {
+        
+        // 暂停
+        [_pauseButton setImage:[UIImage imageNamed:@"playing_btn_play_n@2x"]
+                      forState:UIControlStateNormal];
+        [_pauseButton setImage:[UIImage imageNamed:@"playing_btn_play_h@2x"]
+                      forState:UIControlStateHighlighted];
+        [_avAudioPlayer pause];
+    } else {
+        
+        // 播放
+        [_pauseButton setImage:[UIImage imageNamed:@"playing_btn_pause_n@2x"]
+                      forState:UIControlStateNormal];
+        [_pauseButton setImage:[UIImage imageNamed:@"playing_btn_pause_h@2x"]
+                      forState:UIControlStateHighlighted];
+        [_avAudioPlayer play];
+    }
+}
+
+/* 同步slider和音频 */
 - (void)_synchronizeSliderAndMusic {
     
     // 获取当前音频时间
@@ -314,13 +305,13 @@
     
 }
 
-#pragma mark 隐藏音量slider
+/* 隐藏音量slider */
 - (void)_hiddenVolumeSlider {
     
     [_volumeSlider setHidden:YES];
 }
 
-#pragma mark 获取数据
+/*  获取数据 */
 - (void)_loadData {
     
     // 读取plist文件（Music.plist）
@@ -328,8 +319,8 @@
     _dataArray = [[NSMutableArray alloc] initWithContentsOfFile:_plistPath];
 }
 
-#pragma mark 界面初始化
-- (void)_initViews {
+/* 界面初始化 */
+- (void)_init {
     
     // 1. 设置初始页面
     _playingSongData = _dataArray[0];
@@ -352,7 +343,8 @@
     // 3. 设置下一首按钮
     if (_currentDataIndex == _dataArray.count - 1) {
         
-        [_nextSongButton setEnabled:NO]; // 如果只有一首歌曲，下一首按钮不可用
+        // 如果只有一首歌曲，下一首按钮不可用
+        [_nextSongButton setEnabled:NO];
     }
     
     // 4. 收藏按钮
@@ -364,38 +356,46 @@
                              [UIImage imageNamed:@"selfLoop"],
                              [UIImage imageNamed:@"random"]];
     _playModleImageIndex = 1;
+    
+    // 6. 播放
+    [self _playMusic:songName];
 }
 
 
 
 #pragma mark - system protocol Method
 
-#pragma mark 音频播放完成时
+/* 音频播放完成时 */
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag {
+    
+    // 音乐进度滑块清零
+    [_songSlider setValue:0.0f];
     
     if (_playModle) {
         
         // 随即播放
         if (_currentDataIndex == _dataArray.count -1) {
+            
             _currentDataIndex --;
-            [self nextSongButtonAction];
-            [self pauseButtonAction];
+            [self playSongByIndex:++_currentDataIndex];
+            [self pauseOrPlay];
         } else {
-            [self nextSongButtonAction];
+            [self playSongByIndex:++_currentDataIndex];
         }
     } else {
         
         // 循环播放
         if (_currentDataIndex == _dataArray.count - 1) {
+            
             _currentDataIndex = -1;
             [_lastSongButton setEnabled:NO];
             [_nextSongButton setEnabled:YES];
         }
-        [self nextSongButtonAction];
+        [self playSongByIndex:++_currentDataIndex];
     }
 }
 
-#pragma mark 收藏按钮UIAlertView监听事件
+/* 收藏按钮UIAlertView监听事件 */
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     
     switch (buttonIndex) {
@@ -410,15 +410,5 @@
         default:
             break;
     }
-}
-
-#pragma mark 设置状态栏
-- (UIStatusBarStyle)preferredStatusBarStyle {
-    
-    return UIStatusBarStyleLightContent;
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
 }
 @end

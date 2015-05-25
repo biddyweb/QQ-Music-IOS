@@ -14,9 +14,7 @@
 - (void)middleViewButtonAction; // 中间部分透明按钮
 - (void)backButtonAction;       // 返回
 - (void)collectButtonAction;    // 收藏
-- (void)lastSongButtonAction;   // 上一首
-- (void)pauseButtonAction;      // 暂停/开始
-- (void)nextSongButtonAction;   // 下一首
+- (void)playBtnAction:(UIButton *)sender;          // 播放按钮
 - (void)sliderValueChageAction; //slider拖动监听
 - (void)volumeButtonAction;     // 音量按钮
 - (void)volumeSliderAction;     // 音量滑块
