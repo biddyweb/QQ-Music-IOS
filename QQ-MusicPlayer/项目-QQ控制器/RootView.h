@@ -26,9 +26,15 @@
 
 @interface RootView : UIView
 
-@property (nonatomic, strong) UIView *mainView;
-@property (nonatomic, weak) id<RootViewDelegate> delegate;
+@property (nonatomic, weak) id<RootViewDelegate> delegate;  // 代理
+@property (nonatomic, strong) UIView *backGroundView; // 背景面板
+@property (nonatomic, strong) UIView *topContentView; // 头部面板
+@property (nonatomic, strong) UIView *buttomContentView; // 尾部面板
+@property (nonatomic, strong) UISlider *volumeView; // 音量面板
+@property (nonatomic) CGRect frame;
 
-// 设置页面
-- (UIView *)getView;
+- (UIView *)getBackGroundView; // 获取背景面板
+- (UIView *)getTopContentView; // 获取头部面板
+- (UIView *)getButtomContentView; // 获取尾部面板
+- (UISlider *)getVolumeView; // 获取音量面板
 @end
