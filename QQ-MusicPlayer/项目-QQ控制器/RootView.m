@@ -43,11 +43,12 @@ disableBackgroundImageName:(NSString *)disableBackgroundImageName
     return _volumeView;
 }
 
-// 获取背景面板
+// 背景面板
 - (UIView *)getBackGroundView {
     
     _backGroundView = [[UIView alloc] initWithFrame:CGRectMake(0, kStatusBarHeight, kScreenWidth, kScreenHeight)];
     UIImageView *backgroundImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
+    [backgroundImageView setClipsToBounds:YES];
     [backgroundImageView setTag:1];
     [_backGroundView addSubview:backgroundImageView];
     
@@ -59,13 +60,12 @@ disableBackgroundImageName:(NSString *)disableBackgroundImageName
     return _backGroundView;
 }
 
-// 获取头部面板
+// 头部面板
 - (UIView *)getTopContentView {
     
     // 2. 上部分基视图
     _topContentView = [[UIView alloc] initWithFrame:CGRectMake(0, kStatusBarHeight, kScreenWidth, kTopViewHeight)];
-    [_topContentView setBackgroundColor:[UIColor blackColor]];
-    [_topContentView setAlpha:0.8];
+    [_topContentView setBackgroundColor:kBgColor];
     [_topContentView setTag:2];
     
     // 2.1 返回按钮
@@ -105,13 +105,12 @@ disableBackgroundImageName:(NSString *)disableBackgroundImageName
     return _topContentView;
 }
 
-// 获取尾部面板
+// 尾部面板
 - (UIView *)getButtomContentView {
     
     // 4. 下部分基视图
     _buttomContentView = [[UIButton alloc] initWithFrame:CGRectMake(0, kScreenHeight-kButtomViewHeight, kScreenWidth, kButtomViewHeight)];
-    [_buttomContentView setBackgroundColor:[UIColor blackColor]];
-    [_buttomContentView setAlpha:0.8];
+    [_buttomContentView setBackgroundColor:kBgColor];
     [_buttomContentView setTag:4];
     
     // 4.1 进度条

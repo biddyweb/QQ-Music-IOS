@@ -32,4 +32,7 @@
 
 #define kVolumeBtnWidth 24 // 音量按钮的大小
 #define kPlayModleBtnWidth 24 // 播放模式按钮的大小
+
+// 头部面板和尾部面板背景色和透明度
+#define kBgColor [[UIColor alloc] initWithRed:30.f/255 green:32.f/255 blue:40.f/255 alpha:0.8] 
 #endif
