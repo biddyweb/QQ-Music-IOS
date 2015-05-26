@@ -34,9 +34,12 @@ disableBackgroundImageName:(NSString *)disableBackgroundImageName
 - (UISlider *)getVolumeView {
     
     // 5. 音量slider
-    _frame = CGRectMake(kScreenWidth-(kScreenHeight-kTopViewHeight-kStatusBarHeight-kButtomViewHeight-20)/2-20,(kScreenHeight - kStatusBarHeight -  kTopViewHeight - kButtomViewHeight)/2 + kStatusBarHeight + kTopViewHeight - 20,kScreenHeight-kTopViewHeight-kStatusBarHeight-kButtomViewHeight-20,40);
+    _frame = CGRectMake(0, 0, kScreenHeight-kTopViewHeight-kStatusBarHeight-kButtomViewHeight-20, 40);
     _volumeView = [[UISlider alloc] initWithFrame:_frame];
     _volumeView.transform = CGAffineTransformMakeRotation(M_PI_2);
+    _volumeView.center = CGPointMake(kScreenWidth - 20, kScreenHeight/2);
+    [_volumeView setMaximumTrackTintColor:[UIColor blueColor]];
+    [_volumeView setMinimumTrackTintColor:[UIColor clearColor]];
     [_volumeView addTarget:_delegate action:@selector(volumeSliderAction) forControlEvents:UIControlEventValueChanged | UIControlEventTouchUpInside];
     [_volumeView setHidden:YES];
     [_volumeView setTag:5];

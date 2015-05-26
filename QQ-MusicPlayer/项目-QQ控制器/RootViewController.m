@@ -260,7 +260,7 @@
     
     // 设置音乐总时长
     NSInteger timeOfMusic = _avAudioPlayer.duration;
-    NSString *musicTime = [NSString stringWithFormat:@"%02ld:%02ld",timeOfMusic/60,timeOfMusic%60];
+    NSString *musicTime = [NSString stringWithFormat:@"%02d:%02d",timeOfMusic/60,timeOfMusic%60];
     [_songTimeLabel setText:musicTime];
     
     // 设置slider
@@ -300,7 +300,7 @@
     
     // 设置slider现在的时间
     NSInteger sliderTime = musicTimeNow;
-    NSString *musicTime = [NSString stringWithFormat:@"%02ld:%02ld",sliderTime/60,sliderTime % 60];
+    NSString *musicTime = [NSString stringWithFormat:@"%02d:%02d",sliderTime/60,sliderTime % 60];
     [_sliderTimeLabel setText:musicTime];
     
 }
