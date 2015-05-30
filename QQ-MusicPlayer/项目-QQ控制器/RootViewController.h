@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
 
-@interface RootViewController : UIViewController <AVAudioPlayerDelegate , UIAlertViewDelegate> {
+@interface RootViewController : UIViewController <AVAudioPlayerDelegate , UIAlertViewDelegate ,UITableViewDataSource,UITableViewDelegate> {
     
     UIImageView *_backgroundImageView;  // tag:1 背景图片
     UIView *_topBaseView;               // tag:2 上部分基视图
@@ -26,6 +26,7 @@
     UIButton *_nextSongButton;          // tag:46 下一首
     UIButton *_playModleButton;         // tag:48 播放模式
     UISlider *_volumeSlider;            // tag:5 音量滑块
+    UITableView *_musicList;            // 播放列表
     
     NSString *_plistPath;                // Plist文件路径
     NSMutableArray  *_dataArray;         // Plist 数组

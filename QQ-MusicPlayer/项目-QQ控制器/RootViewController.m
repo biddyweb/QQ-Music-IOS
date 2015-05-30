@@ -30,7 +30,7 @@
                                      target:self
                                    selector:@selector(_synchronizeSliderAndMusic)
                                    userInfo:nil
-                                    repeats:YES];
+                                    repeats:YES];    
 }
 
 #pragma mark - protocol Method
@@ -164,6 +164,77 @@
     }
 }
 
+/* 播放列表*/
+- (void)songListAction {
+    
+    // 将播放列表右移隐藏
+    CGPoint center = _musicList.center;
+    
+    // 判断是隐藏还是显示
+    if (center.x > kScreenWidth) {
+        center.x -= kScreenWidth - kGapOfMusicListAndLeftScreen;
+    } else {
+        center.x += kScreenWidth - kGapOfMusicListAndLeftScreen;
+    }
+    
+    // 动画平移显示或隐藏
+    [UIView animateWithDuration:1.0f animations:^{
+        _musicList.center = center;
+    }];
+}
+
+/* 设置播放列表行数*/
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    
+    return _dataArray.count;
+}
+
+/* 设置播放列表cell*/
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    static NSString *indentify = @"cell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:indentify];
+    
+    if (cell == nil) {
+        
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:indentify];
+    }
+    
+    // 获取歌曲信息
+    NSDictionary *songInfo = _dataArray[indexPath.row];
+    NSString *singer = songInfo[@"singerName"];
+    NSString *song = songInfo[@"songName"];
+    
+    // 设置图片
+    NSString *singerPicName = [NSString stringWithFormat:@"%@.jpg",singer];
+    cell.imageView.image = [UIImage imageNamed:singerPicName];
+    
+    // 设置label
+    cell.textLabel.text = [NSString stringWithFormat:@"%@ - %@",singer,song];
+    cell.backgroundColor = kMusicListColor;
+    cell.textLabel.textColor = [UIColor whiteColor];
+    
+    // 设置背景色
+    if (indexPath.row % 2 == 0) {
+        cell.backgroundColor = [UIColor colorWithWhite:0.9 alpha:0.3];
+    }
+    
+    // 设置cell样式
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    
+    return cell;
+}
+
+// 播放列表点击事件
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    // 播放音乐
+    _currentDataIndex = indexPath.row;
+    [self playSongByIndex:_currentDataIndex];
+    
+    // 过2s收起播放列表
+    [self performSelector:@selector(songListAction) withObject:nil afterDelay:2.0f];
+}
 
 
 #pragma mark - private Method
@@ -218,6 +289,9 @@
     [self.view addSubview:[rootView getButtomContentView]]; // 加载尾部面板
     [self.view addSubview:[rootView getVolumeView]]; // 加载音量面板
     
+    _musicList = [rootView getMusicListView];
+    [self.view addSubview:_musicList]; // 加载播放列表
+    
     
     // 2. 获取根视图上的控件
     _backgroundImageView = (UIImageView *)[self.view viewWithTag:1];  // tag:1 背景图片
@@ -260,7 +334,7 @@
     
     // 设置音乐总时长
     NSInteger timeOfMusic = _avAudioPlayer.duration;
-    NSString *musicTime = [NSString stringWithFormat:@"%02d:%02d",timeOfMusic/60,timeOfMusic%60];
+    NSString *musicTime = [NSString stringWithFormat:@"%02ld:%02ld",timeOfMusic/60,timeOfMusic%60];
     [_songTimeLabel setText:musicTime];
     
     // 设置slider

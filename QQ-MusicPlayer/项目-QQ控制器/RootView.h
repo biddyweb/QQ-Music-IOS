@@ -20,6 +20,7 @@
 - (void)volumeSliderAction;     // 音量滑块
 - (void)hiddenVolumeSlider;     // 音量滑块隐藏
 - (void)playModleAction;        // 播放模式
+- (void)songListAction;         // 播放列表
 @end
 
 @interface RootView : UIView
@@ -29,10 +30,12 @@
 @property (nonatomic, strong) UIView *topContentView; // 头部面板
 @property (nonatomic, strong) UIView *buttomContentView; // 尾部面板
 @property (nonatomic, strong) UISlider *volumeView; // 音量面板
+@property (nonatomic, strong) UITableView *musicListView; // 播放列表
 @property (nonatomic) CGRect frame;
 
 - (UIView *)getBackGroundView; // 获取背景面板
 - (UIView *)getTopContentView; // 获取头部面板
 - (UIView *)getButtomContentView; // 获取尾部面板
 - (UISlider *)getVolumeView; // 获取音量面板
+- (UITableView *)getMusicListView; // 播放列表
 @end

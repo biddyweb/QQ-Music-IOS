@@ -32,7 +32,13 @@
 
 #define kVolumeBtnWidth 24 // 音量按钮的大小
 #define kPlayModleBtnWidth 24 // 播放模式按钮的大小
+#define kSongListBtnWidth 24 // 播放列表按钮
+
+#define kGapOfMusicListAndLeftScreen 50 // 播放列表和左边屏幕的间隙
 
 // 头部面板和尾部面板背景色和透明度
 #define kBgColor [[UIColor alloc] initWithRed:30.f/255 green:32.f/255 blue:40.f/255 alpha:0.8] 
+
+// 播放列表颜色和透明度
+#define kMusicListColor [[UIColor alloc] initWithRed:30.f/255 green:32.f/255 blue:40.f/255 alpha:0.8] 
 #endif

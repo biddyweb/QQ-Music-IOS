@@ -30,7 +30,7 @@ disableBackgroundImageName:(NSString *)disableBackgroundImageName
     return newButton;
 }
 
-// 获取音量面板
+// 音量面板
 - (UISlider *)getVolumeView {
     
     // 5. 音量slider
@@ -183,6 +183,34 @@ disableBackgroundImageName:(NSString *)disableBackgroundImageName
                                     delegateSelect:@selector(playModleAction)
                                                tag:48];
     [_buttomContentView addSubview:playModleButton];
+    
+    // 4.9 播放列表
+    _frame = CGRectMake(kScreenWidth-kButtomItemsGapWithScreen*2-kPlayModleBtnWidth-kSongListBtnWidth, kButtomViewHeight - kSongListBtnWidth - kButtomItemsGapWithScreen, kSongListBtnWidth, kSongListBtnWidth);
+    UIButton *songListButton = [self createButton:_frame
+                         normalBackgroundImageName:@"playing_list"
+                        disableBackgroundImageName:@"playing_list_h"
+                                    delegateSelect:@selector(songListAction)
+                                               tag:49];
+    [_buttomContentView addSubview:songListButton];
     return _buttomContentView;
+}
+
+// 播放列表
+- (UITableView *)getMusicListView {
+    
+    _musicListView = [[UITableView alloc] initWithFrame:CGRectMake(kGapOfMusicListAndLeftScreen, kStatusBarHeight + 10, kScreenWidth - kGapOfMusicListAndLeftScreen, kScreenHeight - kStatusBarHeight - 50) style:UITableViewStylePlain];
+    
+    _musicListView.dataSource = (id<UITableViewDataSource>)_delegate;
+    _musicListView.delegate = (id<UITableViewDelegate>)_delegate;
+    
+    _musicListView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    _musicListView.backgroundColor = kMusicListColor;
+    
+    // 将播放列表右移隐藏
+    CGPoint center = _musicListView.center;
+    center.x += kScreenWidth - kGapOfMusicListAndLeftScreen;
+    _musicListView.center = center;
+    
+    return _musicListView;
 }
 @end
