@@ -84,7 +84,7 @@ disableBackgroundImageName:(NSString *)disableBackgroundImageName
     UILabel *songName = [[UILabel alloc] initWithFrame:CGRectMake(kScreenWidth/2 - kSongNameWitdth/2, 20, kSongNameWitdth, 20)];
     [songName setTextAlignment:NSTextAlignmentCenter];
     [songName setTextColor:[UIColor whiteColor]];
-    [songName setFont:[UIFont fontWithName:@"STHeitiSC-Medium" size:25.f]];
+    [songName setFont:[UIFont fontWithName:@"STHeitiSC-Medium" size:20.f]];
     [songName setTag:22];
     [songName setLineBreakMode:NSLineBreakByTruncatingMiddle];
     [_topContentView addSubview:songName];
@@ -93,7 +93,7 @@ disableBackgroundImageName:(NSString *)disableBackgroundImageName
     UILabel *singerName = [[UILabel alloc] initWithFrame:CGRectMake(kScreenWidth/2 - kSingerNameWidth/2, 45, kSingerNameWidth, 20)];
     [singerName setTextAlignment:NSTextAlignmentCenter];
     [singerName setTextColor:[UIColor whiteColor]];
-    [singerName setFont:[UIFont fontWithName:@"Arial Unicode MS" size:18.f]];
+    [singerName setFont:[UIFont fontWithName:@"Arial Unicode MS" size:15.f]];
     [singerName setTag:23];
     [_topContentView addSubview:singerName];
     

@@ -5,74 +5,80 @@
 	<dict>
 		<key>collect</key>
 		<true/>
-		<key>singerName</key>
-		<string>德永英明</string>
 		<key>songName</key>
-		<string>世界に一つだけの花</string>
+		<string>浜崎あゆみ - MY ALL</string>
 	</dict>
 	<dict>
-        <key>collect</key>
-        <true/>
-		<key>singerName</key>
-		<string>浜崎あゆみ</string>
+		<key>collect</key>
+		<true/>
 		<key>songName</key>
-		<string>MY ALL</string>
+		<string>黄艺明 - 我们的天空</string>
+	</dict>
+	<dict>
+		<key>collect</key>
+		<true/>
+		<key>songName</key>
+		<string>酒井法子 - 碧绿色的兔子</string>
+	</dict>
+	<dict>
+		<key>collect</key>
+		<true/>
+		<key>songName</key>
+		<string>酒井法子 - 碧いうさぎ</string>
+	</dict>
+	<dict>
+		<key>collect</key>
+		<true/>
+		<key>songName</key>
+		<string>酒井法子 - 镜のドレス</string>
+	</dict>
+	<dict>
+		<key>collect</key>
+		<true/>
+		<key>songName</key>
+		<string>Dana Winner - Moonlight Shadow</string>
+	</dict>
+	<dict>
+		<key>collect</key>
+		<true/>
+		<key>songName</key>
+		<string>Eric Church - Give Me Back My Hometown</string>
+	</dict>
+	<dict>
+		<key>collect</key>
+		<true/>
+		<key>songName</key>
+		<string>Jem - It's Amazing</string>
+	</dict>
+	<dict>
+		<key>collect</key>
+		<true/>
+		<key>songName</key>
+		<string>Lady GaGa - Bad Romance</string>
 	</dict>
     <dict>
         <key>collect</key>
         <true/>
-        <key>singerName</key>
-        <string>黄艺明</string>
         <key>songName</key>
-        <string>我们的天空</string>
+        <string>Lady GaGa - Poker Face</string>
     </dict>
     <dict>
         <key>collect</key>
         <true/>
-        <key>singerName</key>
-        <string>酒井法子</string>
         <key>songName</key>
-        <string>碧いうさぎ</string>
+        <string>Selena Gomez  The Scene - Who Says</string>
     </dict>
     <dict>
         <key>collect</key>
         <true/>
-        <key>singerName</key>
-        <string>Eric Church</string>
         <key>songName</key>
-        <string>Give Me Back My Hometown</string>
+        <string>SMAP - 世界に一つだけの花</string>
     </dict>
     <dict>
         <key>collect</key>
         <true/>
-        <key>singerName</key>
-        <string>Jem</string>
         <key>songName</key>
-        <string>It's Amazing</string>
-    </dict>
-    <dict>
-        <key>collect</key>
-        <true/>
-        <key>singerName</key>
-        <string>Lady Gaga</string>
-        <key>songName</key>
-        <string>Poker Face</string>
-    </dict>
-    <dict>
-        <key>collect</key>
-        <true/>
-        <key>singerName</key>
-        <string>Selena Gomez</string>
-        <key>songName</key>
-        <string>Who Says</string>
-    </dict>
-    <dict>
-        <key>collect</key>
-        <true/>
-        <key>singerName</key>
-        <string>Zedd</string>
-        <key>songName</key>
-        <string>I Want You to Know</string>
+        <string>Zedd,Selena Gomez - I Want You to Know (feat. Selena Gomez)</string>
     </dict>
 </array>
 </plist>

@@ -202,12 +202,21 @@
     
     // 获取歌曲信息
     NSDictionary *songInfo = _dataArray[indexPath.row];
-    NSString *singer = songInfo[@"singerName"];
-    NSString *song = songInfo[@"songName"];
+    NSString *songInfoStr = songInfo[@"songName"];
+    NSString *singer = [songInfoStr componentsSeparatedByString:@"-"][0];
+    NSString *song = [songInfoStr componentsSeparatedByString:@"-"][1];
+    
+    // 去除首尾空格
+    singer = [singer stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    song = [song stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     
     // 设置图片
     NSString *singerPicName = [NSString stringWithFormat:@"%@.jpg",singer];
-    cell.imageView.image = [UIImage imageNamed:singerPicName];
+    UIImage *titleImage = [UIImage imageNamed:singerPicName];
+    if (titleImage == nil) {
+        titleImage = [UIImage imageNamed:@"defaultBg.jpeg"];
+    }
+    cell.imageView.image = titleImage;
     
     // 设置label
     cell.textLabel.text = [NSString stringWithFormat:@"%@ - %@",singer,song];
@@ -233,7 +242,7 @@
     [self playSongByIndex:_currentDataIndex];
     
     // 过2s收起播放列表
-    [self performSelector:@selector(songListAction) withObject:nil afterDelay:2.0f];
+    [self performSelector:@selector(songListAction) withObject:nil afterDelay:1.0f];
 }
 
 
@@ -244,8 +253,12 @@
     
     // 1.取出下一首歌的信息
     _playingSongData = _dataArray[index];
-    NSString *singerName = [_playingSongData objectForKey:@"singerName"];
-    NSString *songName = [_playingSongData objectForKey:@"songName"];
+    NSString *songInfoStr = [_playingSongData objectForKey:@"songName"];
+    NSString *singerName = [songInfoStr componentsSeparatedByString:@"-"][0];
+    NSString *songName = [songInfoStr componentsSeparatedByString:@"-"][1];
+    singerName = [singerName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    songName = [songName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    
     _collectFlg = [[_playingSongData objectForKey:@"collect"] boolValue];
     
     // 2.设置收藏图片
@@ -256,7 +269,11 @@
     [_songName setText:songName];
     
     // 4.更换背景图片
-    [_backgroundImageView setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@.jpg",singerName]]];
+    UIImage *bgImage = [UIImage imageNamed:[NSString stringWithFormat:@"%@.jpg",singerName]];
+    if (bgImage == nil) {
+        bgImage = [UIImage imageNamed:@"defaultBg.jpeg"];
+    }
+    [_backgroundImageView setImage:bgImage];
     
     // 5.设置上一首和下一首按钮
     if (_currentDataIndex == 0) {
@@ -273,7 +290,7 @@
     
     // 6.加载并播放相应的音乐
     if (!_pauseFlg) {
-        [self _playMusic:songName];
+        [self _playMusic:songInfoStr];
     }
 }
 
@@ -374,7 +391,7 @@
     
     // 设置slider现在的时间
     NSInteger sliderTime = musicTimeNow;
-    NSString *musicTime = [NSString stringWithFormat:@"%02d:%02d",sliderTime/60,sliderTime % 60];
+    NSString *musicTime = [NSString stringWithFormat:@"%02ld:%02ld",sliderTime/60,sliderTime % 60];
     [_sliderTimeLabel setText:musicTime];
     
 }
@@ -398,12 +415,18 @@
     
     // 1. 设置初始页面
     _playingSongData = _dataArray[0];
-    NSString *singerName = [_playingSongData objectForKey:@"singerName"];  // 歌手名字
-    NSString *songName = [_playingSongData objectForKey:@"songName"];      // 歌名
+    NSString *songInfoStr = [_playingSongData objectForKey:@"songName"];      // 歌名
+    NSString *singerName = [songInfoStr componentsSeparatedByString:@"-"][0];  // 歌手名字
+    NSString *songName = [songInfoStr componentsSeparatedByString:@"-"][1];      // 歌名
+    singerName = [singerName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    songName = [songName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     _currentDataIndex = 0;
     
     // 1.1 获取歌手图片，作为背景图片
     UIImage *backgroundImage = [UIImage imageNamed:[NSString stringWithFormat:@"%@.jpg",singerName]];
+    if (backgroundImage == nil) {
+        backgroundImage = [UIImage imageNamed:@"defaultBg.jpeg"];
+    }
     [_backgroundImageView setImage:backgroundImage];
     
     // 1.2 设置歌手名字 和 歌名
@@ -432,7 +455,7 @@
     _playModleImageIndex = 1;
     
     // 6. 播放
-    [self _playMusic:songName];
+    [self _playMusic:songInfoStr];
 }
 
 
